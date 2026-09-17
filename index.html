@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Time's Up</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <main class="visitor-view">
+    <h1>Time's Up</h1>
+
+    <div id="word-card" class="word-card hidden-word" role="button" tabindex="0" aria-label="Tap to reveal the word">
+      <p id="current-word" class="word-text">(no word drawn yet)</p>
+      <p class="spoiler-hint">Tap to reveal</p>
+    </div>
+
+    <p id="visitor-status" class="status"></p>
+  </main>
+
+  <footer>
+    <button id="show-admin-login" class="link-btn">Admin</button>
+  </footer>
+
+  <section id="admin-login" class="panel hidden">
+    <h2>Admin login</h2>
+    <form id="admin-login-form">
+      <input type="password" id="admin-password" placeholder="Password" autocomplete="current-password" required />
+      <button type="submit">Log in</button>
+      <button type="button" id="cancel-admin-login">Cancel</button>
+    </form>
+    <p id="admin-login-error" class="error"></p>
+  </section>
+
+  <section id="admin-panel" class="panel hidden">
+    <h2>Admin</h2>
+    <button id="admin-logout" class="link-btn">Log out</button>
+
+    <div class="admin-block">
+      <h3>Draw</h3>
+      <p id="bag-status">Words remaining: —</p>
+      <button id="draw-btn">Draw a word</button>
+      <button id="reset-btn">Reset bag</button>
+      <p id="admin-message" class="status"></p>
+    </div>
+
+    <div class="admin-block">
+      <h3>Word list</h3>
+      <p class="hint">One word per line. Changes take effect after the next Reset.</p>
+      <textarea id="word-list-textarea" rows="12" placeholder="cat&#10;Napoleon&#10;pizza"></textarea>
+      <button id="save-words-btn">Save word list</button>
+      <p id="save-words-status" class="status"></p>
+    </div>
+  </section>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

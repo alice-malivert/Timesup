@@ -1,0 +1,179 @@
+:root {
+  color-scheme: light dark;
+  --bg: #101418;
+  --fg: #f1f3f5;
+  --card-bg: #1b2129;
+  --accent: #ffb703;
+  --muted: #8a92a0;
+  --error: #ff6b6b;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px;
+}
+
+h1 {
+  font-size: 1.5rem;
+  margin: 8px 0 24px;
+  letter-spacing: 0.02em;
+}
+
+.visitor-view {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.word-card {
+  width: 100%;
+  min-height: 180px;
+  border-radius: 16px;
+  background: var(--card-bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+  padding: 24px;
+}
+
+.word-text {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin: 0;
+  word-break: break-word;
+}
+
+.spoiler-hint {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.word-card.hidden-word .word-text {
+  filter: blur(14px);
+}
+
+.word-card:not(.hidden-word) .spoiler-hint {
+  display: none;
+}
+
+.status {
+  min-height: 1.2em;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+footer {
+  margin-top: 32px;
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  color: var(--muted);
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 8px;
+}
+
+.panel {
+  width: 100%;
+  max-width: 480px;
+  margin-top: 16px;
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.panel.hidden {
+  display: none;
+}
+
+.panel h2 {
+  margin-top: 0;
+}
+
+.admin-block {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.admin-block h3 {
+  margin: 0 0 8px;
+}
+
+.hint {
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin: 0 0 8px;
+}
+
+textarea {
+  width: 100%;
+  background: var(--bg);
+  color: var(--fg);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  padding: 10px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  resize: vertical;
+}
+
+input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: var(--bg);
+  color: var(--fg);
+  font-size: 1rem;
+  margin-bottom: 12px;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  background: var(--accent);
+  color: #1a1a1a;
+  margin: 4px 4px 4px 0;
+}
+
+button:hover {
+  filter: brightness(1.05);
+}
+
+.error {
+  color: var(--error);
+  min-height: 1.2em;
+  font-size: 0.9rem;
+}
+
+form#admin-login-form {
+  display: flex;
+  flex-direction: column;
+}
