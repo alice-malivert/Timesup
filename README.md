@@ -101,9 +101,10 @@ list or clicks Reset.
 
 ## Using it on game night
 
-- Share the GitHub Pages URL from step 10 — anyone who opens it sees the
-  current word behind a spoiler (tap the card to reveal/hide it; it
-  automatically re-hides on the next draw). No login, no install.
+- Share the GitHub Pages URL from step 10 — anyone who opens it always sees
+  the current word directly. No login, no install.
+  (There's a tap-to-reveal spoiler mode built in but currently switched off;
+  set `SPOILER_ENABLED = true` at the top of `app.js` to turn it back on.)
 - Tap **Admin** at the bottom of the page, enter the password from step 4,
   and you can:
   - **Save word list** — paste/edit words, one per line. Takes effect
@@ -112,6 +113,11 @@ list or clicks Reset.
     it to everyone live.
   - **Reset bag** — refills the bag from the current word list and clears
     the displayed word, ready for a new round.
+  - (There's a built-in "let any visitor draw too" mode — set
+    `ALLOW_VISITOR_DRAW = true` in `app.js` — but it's currently switched
+    off since it needs a looser Firestore rule and hasn't been hardened
+    for open access yet. See the comments next to that flag and in
+    `firestore.rules`.)
 - The admin stays logged in on that device/browser until **Log out** is
   pressed (safe to leave logged in on your own laptop between games).
 

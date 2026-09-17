@@ -11,11 +11,14 @@
   <main class="visitor-view">
     <h1>Time's Up</h1>
 
-    <div id="word-card" class="word-card hidden-word" role="button" tabindex="0" aria-label="Tap to reveal the word">
+    <!-- Spoiler-tap behavior is currently disabled (see SPOILER_ENABLED in app.js) -->
+    <div id="word-card" class="word-card">
       <p id="current-word" class="word-text">(no word drawn yet)</p>
       <p class="spoiler-hint">Tap to reveal</p>
     </div>
 
+    <!-- Shown only if ALLOW_VISITOR_DRAW is enabled in app.js (currently disabled) -->
+    <button id="visitor-draw-btn" class="hidden">Draw next word</button>
     <p id="visitor-status" class="status"></p>
   </main>
 

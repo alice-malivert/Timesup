@@ -3,6 +3,10 @@ service cloud.firestore {
   match /databases/{database}/documents {
     match /game/state {
       allow read: if true;
+      // Draw/reset/word-list writes are admin-only for now. There's a
+      // built-in "anyone can draw" mode (see ALLOW_VISITOR_DRAW in app.js)
+      // that pairs with a looser rule here, but it's disabled until the
+      // access control around it is revisited.
       allow write: if request.auth != null
                    && request.auth.token.email == 'malicemalivert@gmail.com';
     }

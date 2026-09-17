@@ -104,7 +104,7 @@ footer {
   padding: 20px;
 }
 
-.panel.hidden {
+.hidden {
   display: none;
 }
 

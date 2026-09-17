@@ -15,6 +15,17 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 import { firebaseConfig, ADMIN_EMAIL } from "./firebase-config.js";
 
+// Spoiler tap-to-reveal is built but disabled for now: everyone always sees
+// the current word. Flip to true to re-enable the hide/reveal behavior.
+const SPOILER_ENABLED = false;
+
+// Letting any visitor draw (not just the admin) is built but disabled for
+// now: it requires loosening firestore.rules to allow unauthenticated
+// writes, which isn't safe to turn on without more access control. Flip to
+// true (and restore the matching "allow update" rule in firestore.rules)
+// to re-enable it.
+const ALLOW_VISITOR_DRAW = false;
+
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
@@ -32,6 +43,8 @@ const adminPasswordInput = document.getElementById("admin-password");
 const cancelAdminLoginBtn = document.getElementById("cancel-admin-login");
 const adminLoginError = document.getElementById("admin-login-error");
 
+const visitorDrawBtn = document.getElementById("visitor-draw-btn");
+
 const adminPanel = document.getElementById("admin-panel");
 const adminLogoutBtn = document.getElementById("admin-logout");
 const bagStatusEl = document.getElementById("bag-status");
@@ -42,18 +55,20 @@ const wordListTextarea = document.getElementById("word-list-textarea");
 const saveWordsBtn = document.getElementById("save-words-btn");
 const saveWordsStatus = document.getElementById("save-words-status");
 
-// ---- Spoiler toggle ----
+// ---- Spoiler toggle (disabled via SPOILER_ENABLED above) ----
 let lastSeenWord = null;
 
-wordCard.addEventListener("click", () => {
-  wordCard.classList.toggle("hidden-word");
-});
-wordCard.addEventListener("keydown", (e) => {
-  if (e.key === "Enter" || e.key === " ") {
-    e.preventDefault();
+if (SPOILER_ENABLED) {
+  wordCard.addEventListener("click", () => {
     wordCard.classList.toggle("hidden-word");
-  }
-});
+  });
+  wordCard.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      wordCard.classList.toggle("hidden-word");
+    }
+  });
+}
 
 // ---- Shared live state listener (drives both visitor and admin views) ----
 let isAdmin = false;
@@ -72,7 +87,9 @@ onSnapshot(
 
     if (currentWord !== lastSeenWord) {
       lastSeenWord = currentWord;
-      wordCard.classList.add("hidden-word");
+      if (SPOILER_ENABLED) {
+        wordCard.classList.add("hidden-word");
+      }
     }
 
     if (isAdmin) {
@@ -149,8 +166,10 @@ saveWordsBtn.addEventListener("click", async () => {
   }
 });
 
-drawBtn.addEventListener("click", async () => {
-  adminMessageEl.textContent = "";
+// Shared by both the admin "Draw a word" button and the visitor
+// "Draw next word" button — anyone may draw, per firestore.rules.
+async function drawWord(messageEl) {
+  messageEl.textContent = "";
   try {
     await runTransaction(db, async (tx) => {
       const snap = await tx.get(stateRef);
@@ -173,13 +192,20 @@ drawBtn.addEventListener("click", async () => {
     });
   } catch (err) {
     if (err.message === "EMPTY_BAG") {
-      adminMessageEl.textContent = "Bag is empty — press Reset to refill from the word list.";
+      messageEl.textContent = "Bag is empty — ask the admin to reset it.";
     } else {
-      adminMessageEl.textContent = "Draw failed.";
+      messageEl.textContent = "Draw failed.";
       console.error(err);
     }
   }
-});
+}
+
+drawBtn.addEventListener("click", () => drawWord(adminMessageEl));
+
+if (ALLOW_VISITOR_DRAW) {
+  visitorDrawBtn.classList.remove("hidden");
+  visitorDrawBtn.addEventListener("click", () => drawWord(visitorStatus));
+}
 
 resetBtn.addEventListener("click", async () => {
   adminMessageEl.textContent = "";
